@@ -1,0 +1,101 @@
+\input{../head.tex}
+
+\section{Première méthode}
+
+A l'aide des données prisent en laboratoire pour les filtres passe-bas et passe-haut, ils nous a été demandé de déterminer de manière théorique la fréquence de coupure à l'aide de trois méthodes, c'est à dire trouver le point d'intersection entre une droite horizontale et la droite passant par ces trois points prient en laboratoire, $(x_1,y_1), (x_2,y_2)$ et $(x_3,y_3)$. 
+
+Pour cette première méthode, pour déterminer cette droite passant par les trois points, nous commençons par calculer un polynôme de second degré passant par trois points : 
+
+$$q(x) = y_1\frac{(x-x_2)(x-x_3)}{(x_1-x_2)(x_1-x_3)} + y_2\frac{(x-x_1)(x-x_3)}{(x_2-x_1)(x_2-x_3)} + y_3\frac{(x-x_1)(x-x_2)}{(x_3-x_1)(x_3-x_2)}$$
+
+La droite est la projection orthogonale de q(x) sur $\mathbb{R}[x]_1$ par rapport au produit scalaire suivant :
+
+$$(f|g) = f(x_1)g(x_1) + f(x_2)g(x_2) + f(x_3)g(x_3) $$
+
+Nous avons une base usuelle, u= \{1, x\} Il nous faut orthonormée cette base pour ensuite calculer la droite : 
+
+$$H = (q|e_1)e_1 + (q|e_2)e_2$$
+
+\subsection{Filtre passe-bas}
+
+Pour le filtre passe-bas, nous avons mesuré trois points : \{(4.2, 1.7), (4.25, 1.55), (4.3, 1.45)\}
+
+Nous avons calculer le polynôme passant par ces trois points :
+
+$$q(x) = 10x^2 - 87.5x + 192.8$$
+
+Nous avons ensuite orthonormée la base usuelle en appliquant Gram Schmidt :
+
+$$e = \{\frac{1}{\sqrt{3}}, \frac{x-4.25}{0.07}\}$$
+
+On applique ensuite la projection orthogonale du polynôme q sur la base e, nous obtenons ainsi la droite H :
+
+$$H = -2.43x + 11.89$$ 
+
+Pour trouver la fréquence de coupure, nous cherchons le point d'intersection entre la droite H et la droite horizontale y = 2.5. Vu que l'axe de abscisse est passé en échelle logarithmique, nous trouvons donc une valeur logarithmique : x = log($f_c$) = 3.86. Nous obtenons donc comme fréquence de coupure : \textbf{7314 Hz}
+
+\subsection{Filtre passe-haut}
+
+Nous appliquons la même méthode pour les trois points suivants : \{(2.1, 0.4), (2.3, 0.5), (2.6, 06)\}.
+
+Nous trouvons le polynôme suivant :
+
+$$q(x) = -0.33x^2 +1.95x - 2.24$$
+
+Nous orthonormons la base usuelle en appliquant Gram Schmidt :
+
+$$e = \{ \frac{1}{\sqrt{3}}, \frac{x-2.33}{0.36}\}$$
+
+On calcul la projection orthogonale du polynôme q sur la base e et nous obtenons la droite suivante :
+
+$$H = 0.42x - 0.47$$
+
+Pour trouver la fréquence du filtre passe-haut, nous calculons le point d'intersection entre la droite H et la droite horizontale y = 0.75 avec l'axe des abscisse passé en échelle logarithmique. Nous obtenons x = log($f_c$) = 2.9. Nous obtenons ainsi une fréquence de coupure de \textbf{803 Hz}
+
+\section{Deuxième méthode}
+
+Nous cherchons à minimiser la fonction $dist^2$(q,-) à l'aide du polynôme de degré au plus 1, f(x) = ax + b.
+
+$$dist^2(q, f) = (y_1 - (ax_1+b))^2 + (y_2 - (ax_2+b))^2 + (y_3 - (ax_3+b))^2 $$
+
+On va minimiser cette fonction par rapport au variable a et b à l'aide du calcul différentiel. 
+
+\subsection{Filtre passe-bas}
+
+On cherche la fonction $dist^2$(q, f) passant par les trois points suivants : \{(4.2, 1.7), (4.25, 1.55), (4.3, 1.45)\}. Nous obtenons : 
+
+$$dist^2(q, f) = g(a,b) = 7.39 + 54.19 a^2 +3 b^2 + 25.5ab - 39.92 a - 9.4 b$$
+
+Nous calculons le gradiant de cette fonction et cherchons le point où il s'annule :
+
+$$\nabla g(a,b) = (108.38 a + 25.5 b - 39.92, 6 b +25.5 a - 9.4) = 0$$
+
+Nous obtenons comme point (a, b) = (-3, 14.3).  Nous calculons ensuite la matrice hessienne pour savoir si ce point est bien un extremum :
+
+$$\nabla^2 g(a,b) = \left(\begin{array}{cc}108.38 & 25.5 \\25.5 & 6\end{array}\right)$$
+
+Le déterminant de cette matrice est positif ainsi que sa trace (respectivement 0.03 et 114.38), ce qui nous permet de dire que le point trouver au dessus est un minimum. 
+
+Pour trouver la fréquence de coupure du filtre passe-bas, il nous faut chercher l'intersection entre la droite f(x) = -3 x + 14.3 et la droite g(x) = 2.5. L'axe des abscisses étant passé en échelle logarithmique, nous trouvons x = log($f_c$) = 3.93. Nous obtenons ainsi une fréquence de coupure \textbf{$f_c$ = 8576.96 Hz}.
+
+\subsection{Filtre passe-haut}
+
+On cherche la fonction $dist^2$(q, f) passant par les trois points suivants :  \{(2.1, 0.4), (2.3, 0.5), (2.6, 06)\}. Nous obtenons : 
+
+$$dist^2(q, f) = g(a,b) = 0.77 + 16.46 a^2 +3 b^2 + 14ab - 7.1 a - 3 b$$
+
+Nous calculons ensuite le gradient de cette fonction et cherchons le point où il s'annule :
+
+$$\nabla g(a,b) = ( 32.92 a + 14 b _ 7.1, 6 b +14 a -3 ) $$
+
+Nous obtenons comme point (a,b) = (0.38, -0.38). Nous calculons ensuite la matrice hessienne de cette fonction pour vérifier que ce point est un extremum :
+
+$$\nabla^2 g(a,b) = \left(\begin{array}{cc}32.92 & 14 \\14 & 6\end{array}\right)$$
+
+Le déterminant de cette matrice ainsi que sa trace sont bien positifs (respectivement 1.52 et 38.92), le point est donc bien un minimum. 
+
+Pour trouver la fréquence de coupure du filtre passe-haut, nous cherchons le point d'intersection entre la droite f(x) = 0.38x - 0.38 et la droite g(x) = 0.75. L'axe des abscisses étant passé en échelle logarithmique, nous trouvons x = log($f_c$) = 2.97. Nous obtenons ainsi une fréquence de coupure \textbf{$f_c$ = 941.2 Hz}.
+
+
+
+\input{../foot.tex}
